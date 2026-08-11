@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#5046e5">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AHC RO/ARO">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22AHC%20RO/ARO%2060-Day%20Smart%20Study%20App%22%2C%22short_name%22%3A%22AHC%20RO/ARO%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f0f4ff%22%2C%22theme_color%22%3A%22%235046e5%22%2C%22description%22%3A%2260-day%20AHC%20RO/ARO%20study%20planner%22%7D">
+
+<title>AHC RO/ARO – 60 Day Smart Study App | District Minds</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #f0f4ff;
+    --surface: #ffffff;
+    --surface2: #e8edf8;
+    --border: #c8d0e8;
+    --accent: #5046e5;
+    --accent2: #0891b2;
+    --gold: #d97706;
+    --text: #1e1b4b;
+    --text2: #4338ca;
+    --text3: #6b7280;
+    --ancient: #c2410c;
+    --medieval: #be185d;
+    --modern: #1d4ed8;
+    --geo: #047857;
+    --science: #7c3aed;
+    --eco: #b45309;
+    --polity: #dc2626;
+    --lang: #0369a1;
+    --comp: #4d7c0f;
+    --check-bg: #ffffff;
+  }
+  .dark {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #222636;
+    --border: #2e3347;
+    --accent: #6c63ff;
+    --accent2: #00d4aa;
+    --gold: #f5c842;
+    --text: #e2e6f0;
+    --text2: #8b92a9;
+    --text3: #5a6178;
+    --ancient: #e07b3f;
+    --medieval: #c45c8a;
+    --modern: #3b82f6;
+    --geo: #10b981;
+    --science: #8b5cf6;
+    --eco: #f59e0b;
+    --polity: #ef4444;
+    --lang: #06b6d4;
+    --comp: #84cc16;
+    --check-bg: #1a1d27;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text { font-size: 13px; color: var(--text2); }
+  .logo-text strong { display: block; font-size: 16px; color: var(--text); }
+  .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  .btn {
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-accent:hover { opacity: 0.85; color: #fff; }
+
+  /* Progress bar */
+  .progress-wrap {
+    padding: 12px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+  .progress-bar { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 3px; transition: width 0.4s; }
+
+  /* Profile panel */
+  .profile-panel {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease, padding 0.3s;
+  }
+  .profile-panel.open { max-height: 200px; padding: 16px 24px; }
+  .profile-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+  .profile-field { display: flex; flex-direction: column; gap: 4px; }
+  .profile-field label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+  .profile-field input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    width: 180px;
+    outline: none;
+  }
+  .profile-field input:focus { border-color: var(--accent); }
+
+  /* Legend */
+  .legend-wrap {
+    padding: 10px 24px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .legend-label { font-size: 11px; color: var(--text3); margin-right: 4px; }
+  .chip {
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  /* Main table */
+  .table-wrap {
+    padding: 20px 24px 60px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+    font-size: 12.5px;
+  }
+  thead th {
+    background: var(--surface2);
+    color: var(--text2);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    text-align: left;
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: var(--surface2); }
+  tbody tr.done { opacity: 0.5; }
+  td {
+    padding: 8px 12px;
+    vertical-align: top;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .day-cell {
+    white-space: nowrap;
+    min-width: 90px;
+  }
+  .day-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    display: block;
+  }
+  .day-date {
+    font-weight: 600;
+    font-size: 12px;
+    display: block;
+  }
+  .subject-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    white-space: nowrap;
+  }
+  .topic-text {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 2px;
+  }
+
+  .pyq-cell, .ca-cell, .upkk-cell {
+    font-size: 11.5px;
+    color: var(--text2);
+    min-width: 130px;
+  }
+  .pyq-tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    margin: 1px 2px 1px 0;
+    background: rgba(108,99,255,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(108,99,255,0.3);
+  }
+  .ca-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-weight: 600;
+    background: rgba(0,212,170,0.12);
+    color: var(--accent2);
+    border: 1px solid rgba(0,212,170,0.25);
+    margin-bottom: 2px;
+  }
+  .upkk-note {
+    font-size: 11px;
+    color: var(--text3);
+  }
+  .upkk-pyq-text {
+    font-size: 11.5px;
+    color: #7ec8a4;
+    line-height: 1.55;
+  }
+  .upkk-book-text {
+    font-size: 10.5px;
+    color: #a8c5da;
+    margin-top: 5px;
+    font-weight: 500;
+  }
+
+  /* Checkboxes */
+  .checks { display: flex; flex-direction: column; gap: 4px; min-width: 100px; }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    color: var(--text3);
+    cursor: pointer;
+    user-select: none;
+  }
+  .check-item input[type="checkbox"] {
+    width: 13px; height: 13px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .check-item.checked { color: var(--accent2); text-decoration: line-through; }
+
+  .upkk-pyq-text { color: #2e7d5e; }
+  .upkk-book-text { color: #3a6b8a; }
+  .dark .upkk-pyq-text { color: #7ec8a4; }
+  .dark .upkk-book-text { color: #a8c5da; }
+  @media print {
+    header, .profile-panel, .legend-wrap, .progress-wrap { display: none !important; }
+    .table-wrap { padding: 0; }
+    body { background: #fff; color: #000; }
+    table { font-size: 10px; }
+    .btn { display: none; }
+  }
+
+  /* Subject colors */
+  .s-ancient { background: rgba(224,123,63,0.18); color: var(--ancient); }
+  .s-medieval { background: rgba(196,92,138,0.18); color: var(--medieval); }
+  .s-modern { background: rgba(59,130,246,0.18); color: var(--modern); }
+  .s-geo { background: rgba(16,185,129,0.18); color: var(--geo); }
+  .s-science { background: rgba(139,92,246,0.18); color: var(--science); }
+  .s-eco { background: rgba(245,158,11,0.18); color: var(--eco); }
+  .s-polity { background: rgba(239,68,68,0.18); color: var(--polity); }
+  .s-lang { background: rgba(6,182,212,0.18); color: var(--lang); }
+  .s-comp { background: rgba(132,204,22,0.18); color: var(--comp); }
+  .s-revision { background: rgba(245,200,66,0.18); color: var(--gold); }
+
+  .filter-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 12px 24px 0; }
+  .filter-btn { padding: 4px 10px; border-radius: 12px; font-size: 11px; border: 1px solid var(--border); background: transparent; color: var(--text2); cursor: pointer; font-family: inherit; }
+  .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(108,99,255,0.1); }
+
+  .streak-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(245,200,66,0.15);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid rgba(245,200,66,0.3);
+  }
+
+/* ── ANDROID / MOBILE APP UPGRADE ── */
+:root { --safe-bottom: env(safe-area-inset-bottom, 0px); }
+body { padding-bottom: calc(72px + var(--safe-bottom)); }
+.app-nav {
+  display:none; position:fixed; left:0; right:0; bottom:0; z-index:150;
+  background:var(--surface); border-top:1px solid var(--border);
+  padding:8px 8px calc(8px + var(--safe-bottom));
+  grid-template-columns:repeat(4,1fr); gap:5px;
+}
+.app-nav button {
+  border:0; background:transparent; color:var(--text3); font:500 10px Inter,sans-serif;
+  padding:7px 2px; border-radius:9px; cursor:pointer;
+}
+.app-nav button.active { color:var(--accent); background:rgba(80,70,229,.09); }
+.app-nav .nav-icon { display:block; font-size:18px; margin-bottom:2px; }
+
+.mobile-dashboard { display:none; padding:14px; }
+.mobile-dashboard h2 { font-size:18px; margin-bottom:4px; }
+.mobile-dashboard .sub { color:var(--text3); font-size:12px; margin-bottom:12px; }
+.stat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:12px; }
+.stat-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:12px;
+}
+.stat-card .n { font-size:21px; font-weight:700; color:var(--accent); }
+.stat-card .l { font-size:10px; color:var(--text3); margin-top:2px; }
+.today-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:14px; margin-bottom:12px;
+}
+.today-card h3 { font-size:14px; margin-bottom:6px; }
+.today-card .topic { color:var(--text2); font-size:12px; line-height:1.45; }
+.mobile-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.mobile-actions button {
+  border:1px solid var(--border); background:var(--surface); color:var(--text);
+  border-radius:10px; padding:11px 8px; font:600 11px Inter,sans-serif;
+}
+.mobile-actions button.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+.today-view { display:none; padding:14px; }
+.today-view .day-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:15px; margin-bottom:10px;
+}
+.day-card .day-title { font-size:11px; color:var(--text3); font-family:'JetBrains Mono',monospace; }
+.day-card .date-title { font-weight:700; font-size:16px; margin:3px 0 8px; }
+.day-card .subject-title { color:var(--accent); font-weight:700; font-size:12px; }
+.day-card .topic-title { font-size:13px; line-height:1.45; margin-top:4px; }
+.task-list { margin-top:12px; display:grid; gap:7px; }
+.task-row {
+  display:flex; align-items:center; gap:8px; border:1px solid var(--border);
+  border-radius:9px; padding:9px; font-size:11px;
+}
+.task-row input { width:17px; height:17px; accent-color:var(--accent); }
+.today-pyq { margin-top:12px; font-size:11px; color:var(--text2); line-height:1.55; }
+.today-nav { display:flex; gap:8px; margin-bottom:12px; }
+.today-nav button {
+  flex:1; border:1px solid var(--border); background:var(--surface);
+  color:var(--text); border-radius:9px; padding:9px; font:600 11px Inter,sans-serif;
+}
+
+.quiz-view { display:none; padding:14px; }
+.quiz-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:15px;
+}
+.quiz-card h2 { font-size:16px; }
+.quiz-card .hint { color:var(--text3); font-size:11px; margin:4px 0 14px; }
+.quiz-q { font-size:13px; line-height:1.5; margin-bottom:12px; font-weight:600; }
+.quiz-option {
+  width:100%; text-align:left; margin:5px 0; padding:10px;
+  border:1px solid var(--border); border-radius:9px; background:var(--surface2);
+  color:var(--text); font:500 11px Inter,sans-serif;
+}
+.quiz-option.correct { border-color:var(--accent2); color:var(--accent2); }
+.quiz-option.wrong { border-color:#ef4444; color:#ef4444; }
+.quiz-result { margin-top:12px; font-size:12px; font-weight:600; }
+
+.progress-ring {
+  height:8px; background:var(--surface2); border-radius:5px; overflow:hidden; margin-top:7px;
+}
+.progress-ring > div { height:100%; width:0; background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+
+@media (max-width: 700px) {
+  header { padding:11px 13px; }
+  header .logo-icon { width:32px;height:32px;font-size:16px; }
+  .logo-text strong { font-size:14px; }
+  .logo-text { font-size:10px; }
+  .header-right .btn:not(.btn-accent), .streak-badge { display:none; }
+  .header-right .btn-accent { padding:7px 9px; font-size:10px; }
+  .progress-wrap { padding:9px 13px; }
+  .legend-wrap, .filter-row { display:none; }
+  .table-wrap { padding:10px 10px 90px; }
+  table { min-width:760px; font-size:11px; }
+  .app-nav { display:grid; }
+  .mobile-dashboard, .today-view, .quiz-view { display:none; }
+  body.view-dashboard .mobile-dashboard { display:block; }
+  body.view-today .today-view { display:block; }
+  body.view-quiz .quiz-view { display:block; }
+  body.view-planner .table-wrap { display:block; }
+  body.view-dashboard .table-wrap,
+  body.view-today .table-wrap,
+  body.view-quiz .table-wrap { display:none; }
+}
+
+
+.advanced-panel {
+  display:none; position:fixed; inset:0; z-index:220; background:var(--bg);
+  overflow:auto; padding:16px; padding-bottom:calc(90px + var(--safe-bottom));
+}
+.advanced-panel.open { display:block; }
+.adv-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.adv-head button { border:0; background:transparent; color:var(--text); font-size:18px; }
+.adv-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.adv-grid button {
+  padding:12px 8px; border:1px solid var(--border); border-radius:10px;
+  background:var(--surface); color:var(--text); font:600 11px Inter,sans-serif;
+}
+.subject-stat { margin:8px 0; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px; }
+.subject-stat .row { display:flex; justify-content:space-between; font-size:11px; margin-bottom:5px; }
+.note-box { width:100%; min-height:110px; resize:vertical; background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:9px; padding:10px; font:12px Inter,sans-serif; }
+.search-box {
+  margin:10px 13px; width:calc(100% - 26px); padding:9px 11px; border:1px solid var(--border);
+  border-radius:9px; background:var(--surface); color:var(--text); font:12px Inter,sans-serif;
+}
+@media (min-width:701px){ .advanced-panel{max-width:600px; left:auto;} }
+
+</style>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#5046e5">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AHC RO/ARO">
+<link rel="icon" href="./icons/icon-192.png">
+
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">⚖️</div>
+    <div class="logo-text">
+      <strong>AHC RO / ARO</strong>
+      District Minds — 60 Day Smart Study App
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="streak-badge" id="streakBadge">🔥 0 day streak</span>
+    <button class="btn" onclick="toggleProfile()">👤 Profile</button>
+    <button class="btn" onclick="toggleTheme()">🌙 Theme</button>
+    <button class="btn" onclick="resetAll()">🔄 Reset</button>
+    <button class="btn btn-accent" onclick="savePDF()">⬇️ Save PDF</button>
+  </div>
+</header>
+
+<div class="profile-panel" id="profilePanel">
+  <div style="font-size:11px;color:var(--text3);margin-bottom:10px;width:100%">📱 Android mode: your progress is saved on this device automatically. Use Chrome → ⋮ → <b>Add to Home screen</b> to install it like an app.</div>
+  <div class="profile-grid">
+    <div class="profile-field"><label>Name</label><input id="pName" placeholder="Your name" oninput="saveProfile()"></div>
+    <div class="profile-field"><label>Roll No.</label><input id="pRoll" placeholder="e.g. AHC2024XXXX" oninput="saveProfile()"></div>
+    <div class="profile-field"><label>Target Post</label><input id="pPost" placeholder="RO / ARO" oninput="saveProfile()"></div>
+    <div class="profile-field"><label>Study Hours/Day</label><input id="pHours" placeholder="e.g. 6 hrs" oninput="saveProfile()"></div>
+    <div class="profile-field"><label>Telegram</label><input id="pTg" placeholder="@username" oninput="saveProfile()"></div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span>Overall Progress</span>
+    <span id="progressText">0 / 0 tasks done</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="legend-wrap">
+  <span class="legend-label">Subject →</span>
+  <span class="chip s-ancient">Ancient</span>
+  <span class="chip s-medieval">Medieval</span>
+  <span class="chip s-modern">Modern</span>
+  <span class="chip s-geo">Geography</span>
+  <span class="chip s-science">Science</span>
+  <span class="chip s-eco">Eco+Env</span>
+  <span class="chip s-polity">Polity</span>
+  <span class="chip s-lang">Eng+Hindi</span>
+  <span class="chip s-comp">Comp+Maths</span>
+  <span class="chip s-revision">Revision</span>
+</div>
+
+<div class="filter-row">
+  <span style="font-size:11px;color:var(--text3)">Filter:</span>
+  <button class="filter-btn active" onclick="filterSubject('all',this)">All</button>
+  <button class="filter-btn" onclick="filterSubject('ancient',this)">Ancient</button>
+  <button class="filter-btn" onclick="filterSubject('medieval',this)">Medieval</button>
+  <button class="filter-btn" onclick="filterSubject('modern',this)">Modern</button>
+  <button class="filter-btn" onclick="filterSubject('geo',this)">Geography</button>
+  <button class="filter-btn" onclick="filterSubject('science',this)">Science</button>
+  <button class="filter-btn" onclick="filterSubject('eco',this)">Eco+Env</button>
+  <button class="filter-btn" onclick="filterSubject('polity',this)">Polity</button>
+  <button class="filter-btn" onclick="filterSubject('lang',this)">Eng+Hindi</button>
+  <button class="filter-btn" onclick="filterSubject('comp',this)">Comp+Maths</button>
+  <button class="filter-btn" onclick="filterSubject('revision',this)">Revision</button>
+</div>
+
+
+
+<div class="advanced-panel" id="advancedPanel">
+  <div class="adv-head"><b>⚙️ Smart Tools</b><button onclick="closeAdvanced()">✕</button></div>
+  <div class="adv-grid">
+    <button onclick="exportBackup()">💾 Backup Progress</button>
+    <button onclick="importBackup()">📥 Restore Backup</button>
+    <button onclick="showSubjectStats()">📊 Subject Stats</button>
+    <button onclick="openInstallGuide()">📱 Install Guide</button>
+  </div>
+  <div id="advancedContent"></div>
+</div>
+
+<div class="mobile-dashboard" id="dashboardView">
+  <h2>Good study day 👋</h2>
+  <div class="sub" id="dashDate">Loading today...</div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="n" id="dashProgress">0%</div><div class="l">Overall progress</div><div class="progress-ring"><div id="dashProgressBar"></div></div></div>
+    <div class="stat-card"><div class="n" id="dashStreak">0</div><div class="l">Day streak 🔥</div></div>
+    <div class="stat-card"><div class="n" id="dashDone">0</div><div class="l">Tasks completed</div></div>
+    <div class="stat-card"><div class="n" id="dashLeft">60</div><div class="l">Planner days</div></div>
+  </div>
+  <div class="today-card">
+    <h3>📅 Today's focus</h3>
+    <div class="topic" id="dashTopic">Open Today's Study to begin.</div>
+  </div>
+  <div class="mobile-actions">
+    <button class="primary" onclick="showView('today')">▶ Today's Study</button>
+    <button onclick="showView('planner')">📋 Full Planner</button>
+    <button onclick="showView('quiz')">📝 Quick Quiz</button>
+    <button onclick="document.getElementById('pName').focus();toggleProfile()">👤 Profile</button>
+    <button onclick="openAdvanced()">⚙️ Smart Tools</button>
+  </div>
+</div>
+
+<div class="today-view" id="todayView">
+  <div class="today-nav">
+    <button onclick="changeToday(-1)">← Previous</button>
+    <button onclick="changeToday(1)">Next →</button>
+  </div>
+  <div class="day-card">
+    <div class="day-title" id="todayDay"></div>
+    <div class="date-title" id="todayDate"></div>
+    <div class="subject-title" id="todaySubject"></div>
+    <div class="topic-title" id="todayTopic"></div>
+    <div class="task-list" id="todayTasks"></div>
+    <div class="today-pyq" id="todayDetails"></div>
+    <textarea class="note-box" id="todayNote" placeholder="🗒️ Your notes for this day..." oninput="saveTodayNote()"></textarea>
+  </div>
+</div>
+
+<div class="quiz-view" id="quizView">
+  <div class="quiz-card">
+    <h2>📝 Quick Revision Quiz</h2>
+    <div class="hint">Questions are generated directly from the current planner day's topic/PYQ material.</div>
+    <div id="quizContent"></div>
+  </div>
+</div>
+
+<input class="search-box" id="plannerSearch" placeholder="🔎 Search topics, PYQs, subjects..." oninput="searchPlanner(this.value)">
+<div class="table-wrap">
+<table id="plannerTable">
+<thead>
+  <tr>
+    <th style="width:90px">Date</th>
+    <th style="width:160px">Subject / Topic</th>
+    <th style="width:150px">AHC PYQs</th>
+    <th style="width:150px">UPPSC PYQs</th>
+    <th style="width:130px">Current Affairs</th>
+    <th style="width:150px">UP GK</th>
+    <th style="width:110px">✅ Tasks</th>
+  </tr>
+</thead>
+<tbody id="plannerBody"></tbody>
+</table>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────
+const DAYS = [
+  // Ancient History (Days 1-3)
+  {
+    subj: "ancient", label: "Ancient History",
+    topic: "Indus Valley Civilisation — Harappa, Mohenjo-Daro, trade, script",
+    ahc: ["IVC script & seals", "Harappan city planning", "Trade & barter system"],
+    uppsc: ["IVC features & extent", "Harappan culture & religion", "Lothal port & dockyard"],
+    ca: "Chronicle — July 2025",
+    upkk: "PYQ: UP में सिंधु स्थल, आलमगीरपुर, सीसवल; Book: UP Special"
+  },
+  {
+    subj: "ancient", label: "Ancient History",
+    topic: "Vedic Age — Rig Vedic, Later Vedic, Jainism & Buddhism",
+    ahc: ["Vedic economy & polity", "Buddhism — 4 Noble Truths, 8-fold path", "Ashoka's dhamma"],
+    uppsc: ["Jainism — 5 tenets, Tirthankaras", "Buddhist councils — 4 councils", "Later Vedic society"],
+    ca: "Chronicle — July 2025",
+    upkk: "PYQ: सारनाथ — धम्मचक्र प्रवर्तन, UP में बौद्ध स्थल; Book: UP Special"
+  },
+  {
+    subj: "ancient", label: "Ancient History",
+    topic: "Mauryan Empire, Gupta Age, Post-Gupta period",
+    ahc: ["Chandragupta Maurya administration", "Gupta art & literature — golden age", "Nalanda university significance"],
+    uppsc: ["Ashoka inscriptions — Brahmi, Kharosthi", "Gupta literature — Kalidasa", "Harsha's reign & administration"],
+    ca: "Chronicle — July 2025",
+    upkk: "PYQ: कौशाम्बी, श्रावस्ती, अयोध्या — मौर्य-गुप्त काल UP में; Book: UP Special"
+  },
+
+  // Medieval History (Days 4-5)
+  {
+    subj: "medieval", label: "Medieval History",
+    topic: "Delhi Sultanate — Slave, Khilji, Tughlaq, Lodi dynasties; Admin & economy",
+    ahc: ["Iltutmish coins & silver tanka", "Alauddin Khilji market reforms", "Firuz Tughlaq canal system"],
+    uppsc: ["Delhi Sultanate administrative structure", "Khilji conquests — Deccan", "Lodi dynasty — Ibrahim Lodi"],
+    ca: "Chronicle — August 2025",
+    upkk: "PYQ: जौनपुर सल्तनत — शर्की शासक, आगरा किला; Book: UP Special"
+  },
+  {
+    subj: "medieval", label: "Medieval History",
+    topic: "Mughal Empire — Akbar to Aurangzeb; Bhakti & Sufi movements; Maratha rise",
+    ahc: ["Akbar's Din-i-Ilahi & Sulh-i-Kul", "Shivaji's Ashta Pradhan administration", "Aurangzeb's Deccan policy"],
+    uppsc: ["Mansabdari & Jagirdari system", "Bhakti saints — Kabir, Tulsidas, Mirabai", "Maratha confederacy — Peshwa"],
+    ca: "Chronicle — August 2025",
+    upkk: "PYQ: ताजमहल, फतेहपुर सीकरी, कबीर (वाराणसी), तुलसीदास — UP मुगल विरासत; Book: UP Special"
+  },
+
+  // Modern History (Days 6-10)
+  {
+    subj: "modern", label: "Modern History",
+    topic: "British conquest — Plassey, Buxar, Subsidiary Alliance, Doctrine of Lapse",
+    ahc: ["Battle of Plassey causes & impact", "Wellesley's Subsidiary Alliance policy", "Dalhousie's Doctrine of Lapse"],
+    uppsc: ["Subsidiary Alliance — states affected", "British expansion — phases", "Dalhousie's reforms & railways"],
+    ca: "Chronicle — September 2025",
+    upkk: "PYQ: अवध का विलय 1856, वाजिद अली शाह, लखनऊ नवाब; Book: UP Special"
+  },
+  {
+    subj: "modern", label: "Modern History",
+    topic: "1857 Revolt — Causes, centres, leaders, consequences",
+    ahc: ["1857 revolt causes — Enfield cartridge", "Role of sepoys & civil population", "After-effects — India Act 1858"],
+    uppsc: ["Mangal Pandey & Barrackpore mutiny", "Centres — Delhi, Lucknow, Kanpur, Jhansi", "Rani Lakshmi Bai — role & death"],
+    ca: "Chronicle — September 2025",
+    upkk: "PYQ: लखनऊ रेजीडेंसी, कानपुर (नाना साहब), झाँसी (रानी लक्ष्मीबाई), बेगम हजरत महल; Book: UP Special"
+  },
+  {
+    subj: "modern", label: "Modern History",
+    topic: "Indian National Congress — Formation, moderates, extremists, Bengal partition",
+    ahc: ["INC formation 1885 — A.O. Hume", "Bal-Pal-Lal extremist trio", "Partition of Bengal 1905 & impact"],
+    uppsc: ["Moderate vs Extremist ideology", "Swadeshi movement — methods", "INC annual sessions — Surat split"],
+    ca: "Chronicle — October 2025",
+    upkk: "PYQ: मोतीलाल नेहरू, मदनमोहन मालवीय, BHU स्थापना — UP स्वतंत्रता सेनानी; Book: UP Special"
+  },
+  {
+    subj: "modern", label: "Modern History",
+    topic: "Gandhi Era — Non-Cooperation, Civil Disobedience, Quit India Movement",
+    ahc: ["Rowlatt Act & Jallianwala Bagh", "Dandi March 1930 — Civil Disobedience", "Quit India Resolution 1942"],
+    uppsc: ["Champaran satyagraha — indigo farmers", "CDM demands & salt satyagraha", "Quit India — August Kranti"],
+    ca: "Chronicle — October 2025",
+    upkk: "PYQ: चौरी चौरा कांड 1922 (गोरखपुर), आनंद भवन इलाहाबाद; Book: UP Special"
+  },
+  {
+    subj: "modern", label: "Modern History",
+    topic: "Independence & Partition — Cabinet Mission, Mountbatten Plan, Constituent Assembly",
+    ahc: ["Cabinet Mission Plan 1946 — provisions", "Partition violence & refugee crisis", "Integration of princely states — Patel"],
+    uppsc: ["Constituent Assembly — composition & work", "Sardar Patel's role — Hyderabad, Junagadh", "Partition causes — Jinnah's Two-nation theory"],
+    ca: "Chronicle — November 2025",
+    upkk: "PYQ: जवाहरलाल नेहरू (इलाहाबाद), UP के संविधान सभा सदस्य, UP से प्रमुख नेता; Book: UP Special"
+  },
+
+  // Geography (Days 11-17)
+  {
+    subj: "geo", label: "Geography",
+    topic: "Physical Geography — Geomorphology, weathering, erosion; Indian physiography",
+    ahc: ["River landforms — meander, oxbow lake", "Indian plateau types — Deccan, Malwa", "Soil erosion types & prevention"],
+    uppsc: ["Himalayan ranges — Greater, Lesser, Shivalik", "Deccan plateau — Lava, Dharwar", "River systems — Himalayan vs Peninsular"],
+    ca: "Chronicle — November 2025",
+    upkk: "PYQ: गंगा का मैदान, UP की नदियाँ — गंगा, यमुना, घाघरा, गोमती, बेतवा; Book: UP Special"
+  },
+  {
+    subj: "geo", label: "Geography",
+    topic: "Climate — Monsoon mechanism, climatic regions, El Niño/La Niña; Disasters",
+    ahc: ["Monsoon onset mechanism — ITCZ", "El Niño impact on Indian rainfall", "Tropical cyclones — Bay of Bengal"],
+    uppsc: ["India's climatic zones — Koppen classification", "Monsoon variability & drought", "Heat waves — causes & impact"],
+    ca: "Chronicle — December 2025",
+    upkk: "PYQ: UP में लू (मई-जून), शीतलहर, पूर्वी UP बाढ़, चम्बल बीहड़; Book: UP Special"
+  },
+  {
+    subj: "geo", label: "Geography",
+    topic: "Agriculture — Green Revolution, crop patterns, irrigation, food security",
+    ahc: ["Green Revolution — HYV seeds, Punjab-Haryana", "MSP mechanism & procurement", "Crop diversification need"],
+    uppsc: ["Major crops UP — wheat, rice, sugarcane", "Irrigation sources — canal, tube well, tank", "Sugarcane belt — UP, Maharashtra"],
+    ca: "Chronicle — December 2025",
+    upkk: "PYQ: UP कृषि — गेहूँ, धान, गन्ना, आलू उत्पादन; UP में नहर सिंचाई; Book: UP Special"
+  },
+  {
+    subj: "geo", label: "Geography",
+    topic: "Industries & Economic Geography — Minerals, energy, industrial regions",
+    ahc: ["Iron & steel plant locations — Bokaro, Bhilai", "Petroleum refinery locations map", "SEZ significance & export"],
+    uppsc: ["Industrial regions India — Mumbai-Pune, Ahmedabad", "Mineral distribution — coal, iron ore, bauxite", "Renewable energy hubs — solar, wind"],
+    ca: "Chronicle — January 2026",
+    upkk: "PYQ: नोएडा-गाजियाबाद, कानपुर चमड़ा उद्योग, आगरा-वाराणसी; Book: UP Special"
+  },
+  {
+    subj: "geo", label: "Geography",
+    topic: "World Geography — Continents, oceans, straits, passes; Geopolitics",
+    ahc: ["Important straits — Hormuz, Malacca, Bab-el-Mandeb", "Ocean currents — warm & cold", "World time zones — IST, GMT"],
+    uppsc: ["Continents & their capitals", "Important mountain passes — Khyber, Nathu La", "River deltas — Ganga-Brahmaputra, Nile"],
+    ca: "Chronicle — January 2026",
+    upkk: "PYQ: भारत के पड़ोसी देश, UP की अंतर्राष्ट्रीय सीमा (नेपाल); Book: UP Special"
+  },
+  {
+    subj: "geo", label: "Geography",
+    topic: "Population Geography, Urbanisation, Migration, Census 2011",
+    ahc: ["Census 2011 — literacy, density, sex ratio", "Urban agglomeration — Mumbai, Delhi", "Migration patterns — push-pull factors"],
+    uppsc: ["Demographic dividend — India's young population", "UP population data — 2011 census", "Sex ratio trends — declining states"],
+    ca: "Chronicle — February 2026",
+    upkk: "PYQ: UP जनसंख्या घनत्व, लिंगानुपात, साक्षरता दर — जनगणना 2011; Book: UP Special"
+  },
+  {
+    subj: "geo", label: "Geography",
+    topic: "Environment — Biodiversity, national parks, biosphere reserves, climate conventions",
+    ahc: ["Biosphere reserves — 18 in India", "IUCN categories — CR, EN, VU", "Paris Agreement — NDCs, 1.5°C goal"],
+    uppsc: ["Tiger reserves — Jim Corbett, Ranthambore", "Ramsar wetlands — India's list", "UP wildlife sanctuaries — list"],
+    ca: "Chronicle — February 2026",
+    upkk: "PYQ: दुधवा टाइगर रिजर्व, पीलीभीत टाइगर रिजर्व, हस्तिनापुर WLS; Book: UP Special"
+  },
+
+  // Science (Days 18-24)
+  {
+    subj: "science", label: "Science & Tech",
+    topic: "Physics — Laws of motion, gravitation, sound, light, electricity basics",
+    ahc: ["Newton's laws — application MCQs", "Optics — lenses, mirrors, refraction", "Electrical circuits — Ohm's law"],
+    uppsc: ["Simple machines — lever, pulley, inclined plane", "Sound waves — properties, decibel", "Electromagnetic spectrum — uses"],
+    ca: "Chronicle — March 2026",
+    upkk: "PYQ: IIT कानपुर, CDRI लखनऊ, NBRI लखनऊ — UP विज्ञान संस्थान; Book: UP Special"
+  },
+  {
+    subj: "science", label: "Science & Tech",
+    topic: "Chemistry — Elements, compounds, periodic table, acids-bases, chemical reactions",
+    ahc: ["Periodic table trends — electronegativity, atomic radius", "Acids & bases — pH scale, indicators", "Chemical reactions daily life — rusting, burning"],
+    uppsc: ["Compounds & mixtures — differences", "Metals & non-metals — properties", "Chemical bonding — ionic, covalent"],
+    ca: "Chronicle — March 2026",
+    upkk: "PYQ: IFFCO फूलपुर, आँवला — UP उर्वरक उद्योग, कानपुर रासायनिक उद्योग; Book: UP Special"
+  },
+  {
+    subj: "science", label: "Science & Tech",
+    topic: "Biology — Cell, genetics, human body systems, diseases & immunity",
+    ahc: ["Cell organelles — mitochondria, ribosome", "Genetic diseases — haemophilia, colour blindness", "Immune system — antibodies, vaccines"],
+    uppsc: ["Human digestive system — enzymes", "Viral vs bacterial disease", "DNA structure — double helix"],
+    ca: "Chronicle — April 2026",
+    upkk: "PYQ: KGMU, SGPGI लखनऊ, UP में जापानी इंसेफेलाइटिस, डेंगू; Book: UP Special"
+  },
+  {
+    subj: "science", label: "Science & Tech",
+    topic: "Space Technology — ISRO missions, satellites, rockets; Recent launches",
+    ahc: ["ISRO missions — Chandrayaan, Mangalyaan", "Chandrayaan-3 — Vikram lander, Pragyan", "Aditya L1 — solar mission"],
+    uppsc: ["Indian satellites — INSAT, IRS series", "Gaganyaan mission — crew module", "PSLV vs GSLV — comparison"],
+    ca: "Chronicle — April 2026",
+    upkk: "PYQ: UP में उपग्रह आधारित सेवाएं, लखनऊ तारामंडल; Book: UP Special"
+  },
+  {
+    subj: "science", label: "Science & Tech",
+    topic: "Defence & Nuclear Technology — Missiles, nuclear programme, DRDO",
+    ahc: ["Agni missile series — range & type", "Nuclear Non-Proliferation Treaty — India's stand", "DRDO innovations — Tejas, Arjun tank"],
+    uppsc: ["BrahMos missile — speed, range", "India nuclear doctrine — no first use", "Defence corridors — UP, Tamil Nadu"],
+    ca: "Chronicle — May 2026",
+    upkk: "PYQ: UP रक्षा औद्योगिक गलियारा — लखनऊ-आगरा, अलीगढ़-कानपुर नोड; Book: UP Special"
+  },
+  {
+    subj: "science", label: "Science & Tech",
+    topic: "Biotechnology, Nanotechnology, AI & Emerging Technologies",
+    ahc: ["GM crops — Bt cotton, controversies", "CRISPR gene editing — applications", "AI in governance — DigiLocker, Aarogya Setu"],
+    uppsc: ["Biotech applications — medicine, agriculture", "Nanotechnology uses — drug delivery", "5G rollout India — spectrum, applications"],
+    ca: "Chronicle — May 2026",
+    upkk: "PYQ: लखनऊ बायोटेक पार्क, STPI नोएडा, UP स्टार्टअप नीति; Book: UP Special"
+  },
+  {
+    subj: "science", label: "Science & Tech",
+    topic: "Health & Disease — Nutrition, vaccines, epidemics, National Health schemes",
+    ahc: ["Vitamin deficiencies — night blindness, scurvy, rickets", "COVID vaccine types — mRNA, vector", "NHM objectives & components"],
+    uppsc: ["Malnutrition UP — stunting, wasting", "Universal Immunisation Programme", "Health infrastructure UP — CHC, PHC"],
+    ca: "Chronicle — June 2026",
+    upkk: "PYQ: UP में जापानी इंसेफेलाइटिस, ASHA कार्यकर्ता, UP पोषण मिशन; Book: UP Special"
+  },
+
+  // Economy + Environment (Days 25-31)
+  {
+    subj: "eco", label: "Economy",
+    topic: "Indian Economy — GDP, national income, budget, fiscal policy basics",
+    ahc: ["GDP components — C+I+G+(X-M)", "Fiscal deficit — meaning & impact", "GST — structure & revenue trends"],
+    uppsc: ["Five Year Plans legacy — key achievements", "NITI Aayog vs Planning Commission", "Union Budget — structure & types"],
+    ca: "Chronicle — June 2026",
+    upkk: "PYQ: UP GSDP, UP बजट, UP आर्थिक सर्वेक्षण के प्रमुख बिंदु; Book: UP Special"
+  },
+  {
+    subj: "eco", label: "Economy",
+    topic: "Banking & Finance — RBI functions, monetary policy, financial inclusion, UPI",
+    ahc: ["RBI monetary tools — CRR, SLR, repo rate", "Priority sector lending — targets", "Digital payments — UPI, NEFT, RTGS"],
+    uppsc: ["Repo rate — significance & impact", "Financial inclusion schemes — PMJDY", "Cooperative banks UP — structure"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP सहकारी बैंक, जन धन UP लाभार्थी, MSME क्रेडिट UP; Book: UP Special"
+  },
+  {
+    subj: "eco", label: "Economy",
+    topic: "Agriculture Economics — Land reforms, agricultural credit, schemes, food policy",
+    ahc: ["Land reforms post-independence — zamindari abolition", "PM-KISAN scheme — ₹6000/year", "FCI & food storage — buffer stock"],
+    uppsc: ["APMC reforms — e-NAM", "Minimum support price — mechanism", "Contract farming policy — pros & cons"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP भूमि सुधार, जमींदारी उन्मूलन, गन्ना मूल्य नीति; Book: UP Special"
+  },
+  {
+    subj: "eco", label: "Economy + Environment",
+    topic: "Infrastructure — Roads, railways, ports, energy; Make in India, PLI schemes",
+    ahc: ["UDAN scheme — regional connectivity", "Sagarmala project — port modernisation", "PLI sectors — 13 sectors identified"],
+    uppsc: ["Dedicated freight corridors — EDFC, WDFC", "Expressway network India", "Gati Shakti NMP — 16 ministries"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: पूर्वांचल एक्सप्रेसवे, बुंदेलखंड एक्सप्रेसवे, जेवर एयरपोर्ट, UP एक्सप्रेसवे नेटवर्क; Book: UP Special"
+  },
+  {
+    subj: "eco", label: "Environment",
+    topic: "Environment — Climate change, carbon emissions, green economy, international conventions",
+    ahc: ["UNFCCC & COP summits — key decisions", "SDG goals — India's progress on 17 goals", "Carbon trading — carbon credits"],
+    uppsc: ["India's NDC targets — 500 GW renewable", "Green bonds — green taxonomy", "Biodiversity COP — Kunming-Montreal"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP जलवायु कार्य योजना, यमुना प्रदूषण, UP नवीकरणीय ऊर्जा लक्ष्य; Book: UP Special"
+  },
+  {
+    subj: "eco", label: "Environment",
+    topic: "Pollution, Waste Management, Disaster Management — NDMA, DRR frameworks",
+    ahc: ["Air quality index — categories & pollutants", "Solid waste management rules 2016", "NDMA guidelines — disaster response"],
+    uppsc: ["Swachh Bharat Mission — ODF targets", "E-waste rules — EPR policy", "Plastic ban — single-use plastic"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: नमामि गंगे UP, लखनऊ AQI, UP में NDRF बाढ़ राहत; Book: UP Special"
+  },
+  {
+    subj: "eco", label: "Economy",
+    topic: "Poverty, Employment, Social Schemes — MGNREGA, PMAY, Ayushman Bharat etc.",
+    ahc: ["MGNREGA — 100 days, rural employment", "Ayushman Bharat — ₹5 lakh coverage", "PM Awas Yojana — targets & progress"],
+    uppsc: ["Poverty line — Tendulkar, Rangarajan committees", "Skill India Mission — PMKVY", "National Livelihood Mission — SHGs"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP में MGNREGA, एक जिला एक उत्पाद (ODOP) योजना; Book: UP Special"
+  },
+
+  // Polity (Days 32-34)
+  {
+    subj: "polity", label: "Polity",
+    topic: "Constitution — Preamble, Fundamental Rights, DPSPs, Fundamental Duties; Amendments",
+    ahc: ["FR vs DPSP conflict — Golak Nath, Kesavananda Bharati", "42nd & 44th Constitutional amendments", "Right to privacy — Puttaswamy judgement"],
+    uppsc: ["Preamble — significance & keywords", "Article 19 — 6 freedoms & restrictions", "Key constitutional amendments list"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP का संविधान सभा में योगदान, इलाहाबाद HC क्षेत्राधिकार; Book: UP Special"
+  },
+  {
+    subj: "polity", label: "Polity",
+    topic: "Parliament, Executive, Judiciary — Powers, functions, relationships; Centre-State relations",
+    ahc: ["Rajya Sabha special powers — Art 249, 312", "Article 356 — President's Rule, Bommai case", "Supreme Court collegium system"],
+    uppsc: ["President vs PM powers — comparison", "Governor's role — discretionary powers", "Finance Commission — functions & 15th FC"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP विधानसभा (403 सीटें), विधान परिषद (100 सीटें), UP राज्यपाल की भूमिका; Book: UP Special"
+  },
+  {
+    subj: "polity", label: "Polity",
+    topic: "Local Self Governance — 73rd & 74th Amendment; PRIs; Electoral process & ECI",
+    ahc: ["Panchayati Raj — 3-tier structure, 29 subjects", "ULB powers — 12th Schedule 18 functions", "ECI independence — powers & functions"],
+    uppsc: ["UP Panchayat elections — structure", "Delimitation commission — process", "NOTA — significance & legal basis"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP पंचायत व्यवस्था, ग्राम प्रधान अधिकार, जिला पंचायत, UP नगर निगम; Book: UP Special"
+  },
+
+  // English + Hindi (Days 35-38)
+  {
+    subj: "lang", label: "English",
+    topic: "English — Grammar (tenses, voices, narration), Comprehension, Vocabulary, Synonyms/Antonyms",
+    ahc: ["Active-Passive voice conversion", "Error spotting — common grammar mistakes", "Reading comprehension — inference questions"],
+    uppsc: ["Fill in the blanks — prepositions, articles", "One word substitution — 50 key words", "Sentence improvement — structure"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: AHC RO/ARO English grammar PYQs — active-passive, error spotting; Book: UP Special"
+  },
+  {
+    subj: "lang", label: "English",
+    topic: "English — Précis writing, essay, letter writing (official); idioms & phrases",
+    ahc: ["Official letter format — AHC style", "Précis passage — condensation rules", "Idioms & their meanings — 30 common"],
+    uppsc: ["Essay on social topics — outline method", "Report writing — format & structure", "Phrase meanings — phrasal verbs"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: AHC RO/ARO official letter, précis, idioms PYQs; Book: UP Special"
+  },
+  {
+    subj: "lang", label: "Hindi",
+    topic: "Hindi — व्याकरण (संधि, समास, अलंकार, रस, छंद), मुहावरे, लोकोक्तियाँ",
+    ahc: ["संधि विच्छेद — स्वर, व्यंजन, विसर्ग संधि", "समास पहचान — 6 प्रकार", "रस पहचान — काव्यांश"],
+    uppsc: ["अलंकार भेद — अनुप्रास, यमक, रूपक", "मुहावरे अर्थ — 50 प्रमुख मुहावरे", "लोकोक्ति प्रश्न — 30 लोकोक्तियाँ"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP राजभाषा हिंदी नीति, संधि-समास-अलंकार PYQs AHC/UPPSC; Book: UP Special"
+  },
+  {
+    subj: "lang", label: "Hindi",
+    topic: "Hindi — पत्र लेखन, निबंध, सरकारी पत्राचार; हिंदी साहित्य इतिहास",
+    ahc: ["आधिकारिक पत्र लेखन — UP सरकारी प्रारूप", "निबंध — सामाजिक व समसामयिक विषय", "कविता का भाव व्याख्या"],
+    uppsc: ["हिंदी व्याकरण MCQs — वर्तनी शुद्धि", "साहित्यिक विधाएं — कहानी, उपन्यास, नाटक", "आधुनिक हिंदी साहित्य — छायावाद, प्रगतिवाद"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: प्रेमचंद (वाराणसी), निराला (इलाहाबाद), कबीर, तुलसीदास — UP हिंदी साहित्य PYQs; Book: UP Special"
+  },
+
+  // Computer + Maths (Days 39-45)
+  {
+    subj: "comp", label: "Computer",
+    topic: "Computer Fundamentals — Hardware, software, OS, networking basics; MS Office",
+    ahc: ["Types of software — system, application, utility", "Network topologies — star, bus, ring, mesh", "MS Office shortcuts — Word, Excel, PowerPoint"],
+    uppsc: ["Input/output devices — scanner, plotter", "Internet protocols — HTTP, FTP, SMTP", "Cloud computing — IaaS, PaaS, SaaS"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP e-governance पोर्टल, Jan Suvidha Kendra, UP IT नीति; Book: UP Special"
+  },
+  {
+    subj: "comp", label: "Computer",
+    topic: "Internet, Cybersecurity, AI/ML basics, E-governance; Digital India Mission",
+    ahc: ["Cybercrime types — phishing, ransomware, DOS", "Digital India pillars — 9 pillars", "Aadhaar & data privacy — PDPB"],
+    uppsc: ["E-governance definition & types", "Social media regulation — IT Act 2021 rules", "IT Act provisions — Sections 66, 67, 69"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP e-District पोर्टल, CM Helpline 1076, SEWA पोर्टल UP; Book: UP Special"
+  },
+  {
+    subj: "comp", label: "Mathematics",
+    topic: "Maths — Number system, HCF/LCM, percentage, profit-loss, ratio & proportion",
+    ahc: ["Percentage problems — increase/decrease", "Profit-loss — CP, SP, discount", "Ratio & proportion — direct & inverse"],
+    uppsc: ["Number series — next term", "Average — weighted average", "Simplification — BODMAS"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP राजस्व भूमि माप — बीघा, हेक्टेयर, विस्वा; Book: UP Special"
+  },
+  {
+    subj: "comp", label: "Mathematics",
+    topic: "Maths — Time & work, time-distance, SI/CI, algebra basics",
+    ahc: ["Time & work — pipes & cistern", "Simple & compound interest — formula application", "Train speed — relative motion"],
+    uppsc: ["Speed-distance-time — word problems", "Work & wages — efficiency ratio", "Linear equations — two variable"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP राजस्व गणना, गिरदावरी रिकॉर्ड, पटवारी परीक्षा; Book: UP Special"
+  },
+  {
+    subj: "comp", label: "Mathematics",
+    topic: "Maths — Geometry, mensuration, statistics, data interpretation",
+    ahc: ["Area & perimeter — triangle, circle, trapezium", "Data table interpretation — row-column", "Mean-median-mode — grouped data"],
+    uppsc: ["Volume & surface area — cylinder, cone, sphere", "Pie chart questions — angle calculation", "Bar graph analysis — comparison"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: UP भूमि क्षेत्रफल माप, खसरा-खतौनी, ग्राम मानचित्र; Book: UP Special"
+  },
+  {
+    subj: "comp", label: "Mathematics",
+    topic: "Reasoning — Coding-decoding, blood relations, direction, syllogism, series",
+    ahc: ["Coding-decoding — letter shift, number coding", "Blood relations — family tree", "Syllogism — all, some, no conclusions"],
+    uppsc: ["Number series completion — pattern", "Direction sense — final position", "Analogy reasoning — word & number"],
+    ca: "Chronicle — July 2026",
+    upkk: "PYQ: AHC RO/ARO Reasoning PYQs — coding, blood relation, syllogism; Book: UP Special"
+  },
+  {
+    subj: "comp", label: "Mathematics",
+    topic: "Maths — Full revision: Number system, Percentage, Profit-Loss, Time & Work, Geometry",
+    ahc: ["Percentage & profit-loss — mixed problems", "Time & work — pipes & cistern", "Geometry — area, perimeter, volume"],
+    uppsc: ["Number series & simplification", "SI/CI — compound interest problems", "Data interpretation — table & bar graph"],
+    ca: "Chronicle — August 2026",
+    upkk: "PYQ: UP राजस्व गणना, गिरदावरी, भूमि माप PYQs; Book: UP Special"
+  },
+  {
+    subj: "lang", label: "English",
+    topic: "English — Full revision: Grammar, Vocabulary, Comprehension, Letter & Précis writing",
+    ahc: ["Active-Passive & Direct-Indirect revision", "Error spotting — mixed grammar", "Official letter format — AHC style"],
+    uppsc: ["One word substitution — 50 key words", "Fill in the blanks — prepositions & articles", "Reading comprehension — inference"],
+    ca: "Chronicle — August 2026",
+    upkk: "PYQ: AHC RO/ARO English grammar & writing PYQs; Book: UP Special"
+  },
+,
+
+  // Extension Days 46-60 — Revision, mixed practice and consolidation
+  {
+    subj:"revision", label:"Revision",
+    topic:"Ancient + Medieval History — mixed revision and chronology",
+    ahc:["Ancient chronology & key sites mixed PYQs","Mauryan/Gupta comparison","Sultanate & Mughal administration mixed PYQs"],
+    uppsc:["UP historical sites mixed PYQs","Bhakti-Sufi & medieval UP links","Chronology-based UPPSC questions"],
+    ca:"Chronicle — August 2026",
+    upkk:"PYQ: UP ancient/medieval sites, rulers and cultural heritage; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Modern History — 1757 to 1947 timeline, movements and personalities",
+    ahc:["British expansion timeline","1857 to Swadeshi mixed PYQs","Gandhian era & constitutional developments"],
+    uppsc:["UP role in 1857","UP freedom movement personalities","Congress sessions & movements mixed PYQs"],
+    ca:"Chronicle — August 2026",
+    upkk:"PYQ: UP freedom movement, 1857 centres and leaders; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Indian Geography — maps, rivers, climate, agriculture and resources",
+    ahc:["Indian physiography map revision","River systems & irrigation","Crops, soils and mineral belts"],
+    uppsc:["UP rivers and irrigation","UP agriculture & crops","UP geography map-based PYQs"],
+    ca:"Chronicle — August 2026",
+    upkk:"PYQ: UP rivers, districts, crops, soils and physical geography; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Environment + Disaster Management — protected areas, pollution and climate",
+    ahc:["National parks, biosphere reserves and Ramsar sites","Pollution & waste rules revision","Climate conventions & disaster management"],
+    uppsc:["UP protected areas","Namami Gange and pollution","Flood, heatwave and drought management in UP"],
+    ca:"Chronicle — August 2026",
+    upkk:"PYQ: Dudhwa, Pilibhit, UP wetlands and environmental schemes; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Science & Technology — physics, chemistry, biology and space mixed revision",
+    ahc:["Physics formula/concept MCQs","Chemistry daily-life reactions","Biology, vaccines and genetics"],
+    uppsc:["Science institutions in UP","Space and defence technology","Health and disease mixed PYQs"],
+    ca:"Chronicle — August 2026",
+    upkk:"PYQ: IIT Kanpur, KGMU, SGPGI, NBRI and UP science institutions; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Economy — GDP, banking, agriculture, budget and government schemes",
+    ahc:["GDP/fiscal policy mixed PYQs","RBI/monetary policy revision","Agriculture and welfare schemes"],
+    uppsc:["UP budget & GSDP","UP banking/cooperative sector","UP schemes and employment"],
+    ca:"Chronicle — August 2026",
+    upkk:"PYQ: UP budget, economy, agriculture and welfare schemes; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Polity — Constitution, Parliament, Judiciary and local government",
+    ahc:["Fundamental Rights/DPSP/Amendments","Parliament and executive mixed PYQs","Judiciary and constitutional bodies"],
+    uppsc:["UP Legislature & Governor","UP Panchayati Raj","Constitutional provisions in UPPSC PYQs"],
+    ca:"Chronicle — August 2026",
+    upkk:"PYQ: UP Assembly, Council, Governor, HC jurisdiction and Panchayats; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"English — grammar, vocabulary, comprehension and official writing",
+    ahc:["Error spotting mixed set","Voice/narration and sentence improvement","Letter/précis/comprehension practice"],
+    uppsc:["Vocabulary and one-word substitution","Idioms and phrasal verbs","Comprehension and sentence correction"],
+    ca:"Chronicle — September 2026",
+    upkk:"PYQ: AHC/UPPSC English grammar and writing mixed practice; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Hindi — व्याकरण, साहित्य, पत्र लेखन और निबंध",
+    ahc:["संधि, समास, अलंकार mixed PYQs","वर्तनी, मुहावरे, लोकोक्तियाँ","पत्र, निबंध और भाव-व्याख्या"],
+    uppsc:["हिंदी साहित्य इतिहास","व्याकरण mixed MCQs","सरकारी पत्राचार एवं लेखन"],
+    ca:"Chronicle — September 2026",
+    upkk:"PYQ: AHC/UPPSC Hindi mixed practice; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Computer + Reasoning — fundamentals, cyber security, series and logic",
+    ahc:["Computer fundamentals & MS Office","Cybersecurity and Internet","Reasoning mixed PYQs"],
+    uppsc:["E-governance and IT","Coding, blood relations and syllogism","Number series and direction sense"],
+    ca:"Chronicle — September 2026",
+    upkk:"PYQ: UP e-governance, IT policy and reasoning mixed practice; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Mathematics — arithmetic, algebra, geometry and data interpretation",
+    ahc:["Percentage, ratio, profit-loss","Time-work, SI/CI and speed","Geometry and data interpretation"],
+    uppsc:["Number system and simplification","Series and averages","Mensuration and graphs"],
+    ca:"Chronicle — September 2026",
+    upkk:"PYQ: UP revenue calculations, land measurement and arithmetic mixed practice; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"UP GK — districts, rivers, culture, schemes, economy and institutions",
+    ahc:["UP geography and important places","UP history and culture","UP institutions and development"],
+    uppsc:["District-specific PYQs","UP schemes and administration","UP economy and current issues"],
+    ca:"Chronicle — September 2026",
+    upkk:"PYQ: UP districts, rivers, heritage, schemes and institutions; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Full GS Mixed Revision I — History, Geography, Science and Environment",
+    ahc:["50-question mixed GS set","Weak-topic review","Fact/chronology/map revision"],
+    uppsc:["50-question UPPSC mixed set","UP-specific weak areas","Elimination and accuracy practice"],
+    ca:"Chronicle — September 2026",
+    upkk:"PYQ: Mixed UP GK set; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Full GS Mixed Revision II — Economy, Polity, Language and Computer",
+    ahc:["50-question mixed set","Polity/economy high-yield revision","Language/computer accuracy drill"],
+    uppsc:["50-question mixed UPPSC set","UP governance/economy revision","Reasoning/maths speed drill"],
+    ca:"Chronicle — September 2026",
+    upkk:"PYQ: Mixed AHC/UPPSC practice; Book: UP Special"
+  },
+  {
+    subj:"revision", label:"Revision",
+    topic:"Final Consolidation — full syllabus mock + error log + next-cycle revision",
+    ahc:["Full-length mixed mock","Review every incorrect answer","Create final one-page revision list"],
+    uppsc:["Full-length UPPSC-style mock","Review UP-specific errors","Prioritise recurring PYQ themes"],
+    ca:"Chronicle — September 2026",
+    upkk:"PYQ: Final mixed UP GK revision; Book: UP Special"
+  },
+];
+
+// Use explicit local date (avoids UTC-midnight timezone shift in IST)
+function makeLocalDate(year, month, day) {
+  return new Date(year, month - 1, day); // month is 0-indexed
+}
+const START = makeLocalDate(2026, 8, 12);
+const TOTAL_DAYS = Math.min(DAYS.length, 60);
+const DATES = [];
+for(let i = 0; i < TOTAL_DAYS; i++){
+  const d = makeLocalDate(2026, 8, 12);
+  d.setDate(d.getDate() + i);
+  DATES.push(d);
+}
+
+const DAY_NAMES = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function fmtDate(d) {
+  return `${DAY_NAMES[d.getDay()]}, ${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
+}
+
+function buildTable() {
+  const tbody = document.getElementById("plannerBody");
+  tbody.innerHTML = "";
+  DAYS.slice(0, TOTAL_DAYS).forEach((day, i) => {
+    const tr = document.createElement("tr");
+    tr.dataset.subj = day.subj;
+    tr.id = `row-${i}`;
+
+    const dayN = i+1;
+    const dateStr = fmtDate(DATES[i]);
+    const saved = getSavedRow(i);
+
+    // Day cell
+    const tdDay = document.createElement("td");
+    tdDay.className = "day-cell";
+    tdDay.innerHTML = `<span class="day-num">Day ${dayN}</span><span class="day-date">${dateStr}</span>`;
+
+    // Subject cell
+    const tdSubj = document.createElement("td");
+    tdSubj.innerHTML = `<span class="subject-chip s-${day.subj}">${day.label}</span><div class="topic-text">${day.topic}</div>`;
+
+    // AHC PYQs cell
+    const tdAhc = document.createElement("td");
+    tdAhc.className = "pyq-cell";
+    tdAhc.innerHTML = day.ahc.map(q=>`<span class="pyq-tag">AHC</span> ${q}<br>`).join("");
+
+    // UPPSC PYQs cell
+    const tdUppsc = document.createElement("td");
+    tdUppsc.className = "pyq-cell";
+    tdUppsc.innerHTML = day.uppsc.map(q=>`<span class="pyq-tag" style="background:rgba(16,185,129,0.15);color:var(--geo);border-color:rgba(16,185,129,0.3)">PSC</span> ${q}<br>`).join("");
+
+    // CA cell
+    const tdCa = document.createElement("td");
+    tdCa.className = "ca-cell";
+    tdCa.innerHTML = `<span class="ca-badge">📰 ${day.ca}</span>`;
+
+    // UP GK cell — PYQ + Book only
+    const tdUpkk = document.createElement("td");
+    tdUpkk.className = "upkk-note";
+    const upkkParts = day.upkk.split('; Book:');
+    const pyqPart = upkkParts[0].replace(/^PYQ:\s*/,'');
+    const bookPart = upkkParts[1] ? upkkParts[1].trim() : '';
+    tdUpkk.innerHTML = `<div class="upkk-pyq-text">📝 PYQs</div>`
+      + (bookPart ? `<div class="upkk-book-text">📗 ${bookPart}</div>` : '');
+
+    // Checkboxes cell
+    const tdCheck = document.createElement("td");
+    const tasks = ["📖 Study done","📝 PYQs done","📰 CA done","🗺️ UP GK done","✅ Revision"];
+    const checks = document.createElement("div");
+    checks.className = "checks";
+    tasks.forEach((task, ti) => {
+      const label = document.createElement("label");
+      label.className = "check-item" + (saved[ti] ? " checked" : "");
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!saved[ti];
+      cb.onchange = () => {
+        label.classList.toggle("checked", cb.checked);
+        saveCheck(i, ti, cb.checked);
+        updateProgress();
+        updateStreak();
+        updateRowDone(i, checks);
+      };
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(task));
+      checks.appendChild(label);
+    });
+    tdCheck.appendChild(checks);
+
+    tr.append(tdDay, tdSubj, tdAhc, tdUppsc, tdCa, tdUpkk, tdCheck);
+    updateRowDone(i, checks, tr);
+    tbody.appendChild(tr);
+  });
+  updateProgress();
+  updateStreak();
+}
+
+function updateRowDone(i, checks, tr) {
+  if(!tr) tr = document.getElementById(`row-${i}`);
+  if(!tr) return;
+  const allDone = Array.from(checks.querySelectorAll("input")).every(cb=>cb.checked);
+  tr.classList.toggle("done", allDone);
+}
+
+// ─── STORAGE ─────────────────────────────────────────────────────────────
+function getSavedRow(i) {
+  try { return JSON.parse(localStorage.getItem(`ahc_row_${i}`)) || []; } catch { return []; }
+}
+function saveCheck(i, ti, val) {
+  const saved = getSavedRow(i);
+  saved[ti] = val;
+  localStorage.setItem(`ahc_row_${i}`, JSON.stringify(saved));
+}
+
+// ─── PROGRESS ────────────────────────────────────────────────────────────
+function updateProgress() {
+  let total=0, done=0;
+  for(let i=0;i<TOTAL_DAYS;i++){
+    const row = getSavedRow(i);
+    total += 5;
+    done += row.filter(Boolean).length;
+  }
+  document.getElementById("progressText").textContent = `${done} / ${total} tasks done`;
+  document.getElementById("progressFill").style.width = total ? (done/total*100)+"%" : "0%";
+}
+
+function updateStreak() {
+  let streak=0;
+  const today=new Date(); today.setHours(0,0,0,0);
+  for(let i=TOTAL_DAYS-1;i>=0;i--){
+    const d=makeLocalDate(2026,8,12); d.setDate(d.getDate()+i); d.setHours(0,0,0,0);
+    const row=getSavedRow(i);
+    if(row[0]){streak++;}
+    else if(d<today) break;
+  }
+  document.getElementById("streakBadge").textContent=`🔥 ${streak} day streak`;
+}
+
+// ─── FILTER ──────────────────────────────────────────────────────────────
+function filterSubject(subj, btn) {
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  document.querySelectorAll("#plannerBody tr").forEach(tr=>{
+    tr.style.display = (subj==="all"||tr.dataset.subj===subj)?"":"none";
+  });
+}
+
+// ─── PROFILE ─────────────────────────────────────────────────────────────
+function toggleProfile() {
+  document.getElementById("profilePanel").classList.toggle("open");
+}
+function saveProfile() {
+  ["pName","pRoll","pPost","pHours","pTg"].forEach(id=>{
+    localStorage.setItem(`ahc_${id}`, document.getElementById(id).value);
+  });
+}
+function loadProfile() {
+  ["pName","pRoll","pPost","pHours","pTg"].forEach(id=>{
+    const v=localStorage.getItem(`ahc_${id}`);
+    if(v) document.getElementById(id).value=v;
+  });
+}
+
+// ─── THEME ───────────────────────────────────────────────────────────────
+let dark=false;
+function toggleTheme() {
+  dark=!dark;
+  document.body.classList.toggle("dark", dark);
+  const btn=document.querySelector('.header-right .btn:nth-child(3)');
+  if(btn) btn.textContent= dark?"☀️ Theme":"🌙 Theme";
+  localStorage.setItem("ahc_theme", dark?"dark":"light");
+}
+
+// ─── RESET ───────────────────────────────────────────────────────────────
+function resetAll() {
+  if(!confirm("Reset all progress? This cannot be undone.")) return;
+  for(let i=0;i<TOTAL_DAYS;i++) localStorage.removeItem(`ahc_row_${i}`);
+  buildTable();
+}
+
+// ─── PDF ─────────────────────────────────────────────────────────────────
+function savePDF() {
+  window.print();
+}
+
+
+// ─── MOBILE APP UPGRADE ───────────────────────────────────────────────────
+let mobileDayIndex = 0;
+
+function getMobileTodayIndex() {
+  const now = new Date(); now.setHours(0,0,0,0);
+  const start = makeLocalDate(2026,8,12); start.setHours(0,0,0,0);
+  let i = Math.floor((now-start)/86400000);
+  return Math.max(0, Math.min(TOTAL_DAYS-1, i));
+}
+
+function showView(view) {
+  document.body.classList.remove("view-dashboard","view-today","view-planner","view-quiz");
+  document.body.classList.add("view-" + view);
+  document.querySelectorAll(".app-nav button").forEach(b=>b.classList.remove("active"));
+  const nav = document.getElementById("nav-" + view);
+  if(nav) nav.classList.add("active");
+  if(view==="dashboard") updateDashboard();
+  if(view==="today") { mobileDayIndex=getMobileTodayIndex(); renderToday(); }
+  if(view==="quiz") renderQuiz();
+}
+
+function taskValues(i) {
+  const row=getSavedRow(i);
+  return [0,1,2,3,4].map(x=>!!row[x]);
+}
+
+function updateDashboard() {
+  const now=new Date();
+  document.getElementById("dashDate").textContent =
+    now.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  let total=TOTAL_DAYS*5, done=0;
+  for(let i=0;i<TOTAL_DAYS;i++) done+=getSavedRow(i).filter(Boolean).length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById("dashProgress").textContent=pct+"%";
+  document.getElementById("dashProgressBar").style.width=pct+"%";
+  document.getElementById("dashDone").textContent=done;
+  document.getElementById("dashLeft").textContent=TOTAL_DAYS;
+  document.getElementById("dashStreak").textContent=(document.getElementById("streakBadge").textContent.match(/\d+/)||["0"])[0];
+
+  const i=getMobileTodayIndex(), d=DAYS[i];
+  document.getElementById("dashTopic").innerHTML =
+    `<b>Day ${i+1} — ${fmtDate(DATES[i])}</b><br><span>${d.label}</span><br>${d.topic}`;
+}
+
+function renderToday() {
+  const i=Math.max(0,Math.min(TOTAL_DAYS-1,mobileDayIndex)), d=DAYS[i];
+  document.getElementById("todayDay").textContent="DAY "+(i+1)+" / "+TOTAL_DAYS;
+  document.getElementById("todayDate").textContent=fmtDate(DATES[i]);
+  document.getElementById("todaySubject").textContent=d.label;
+  document.getElementById("todayTopic").textContent=d.topic;
+
+  const names=["📖 Study done","📝 PYQs done","📰 CA done","🗺️ UP GK done","✅ Revision"];
+  const saved=getSavedRow(i);
+  document.getElementById("todayTasks").innerHTML=names.map((n,t)=>`
+    <label class="task-row">
+      <input type="checkbox" ${saved[t]?"checked":""} onchange="mobileCheck(${i},${t},this.checked)">
+      <span>${n}</span>
+    </label>`).join("");
+
+  document.getElementById("todayDetails").innerHTML =
+    `<b>AHC PYQs:</b> ${d.ahc.join(" • ")}<br>
+     <b>UPPSC PYQs:</b> ${d.uppsc.join(" • ")}<br>
+     <b>Current Affairs:</b> ${d.ca}<br>
+     <b>UP GK:</b> ${d.upkk.replace("; Book:"," • <b>Book:</b>")}`;
+}
+
+function mobileCheck(i,t,val) {
+  saveCheck(i,t,val);
+  buildTable();
+  updateDashboard();
+  renderToday();
+}
+
+function changeToday(delta) {
+  mobileDayIndex=Math.max(0,Math.min(TOTAL_DAYS-1,mobileDayIndex+delta));
+  renderToday();
+}
+
+function renderQuiz() {
+  const i=getMobileTodayIndex(), d=DAYS[i];
+  const items=[
+    {q:"Which topic is the main focus for today?", opts:[d.topic,"A random revision topic","Only current affairs","Only mathematics"], a:0},
+    {q:"Which AHC PYQ area is listed for this day?", opts:d.ahc.slice(0,3), a:0},
+    {q:"Which UPPSC PYQ area is listed for this day?", opts:d.uppsc.slice(0,3), a:0}
+  ];
+  // Keep the quiz source-faithful: the first listed item is the keyed answer.
+  let html=`<div class="quiz-q">Day ${i+1}: ${d.label}</div>`;
+  items.forEach((it,qi)=>{
+    html+=`<div class="quiz-q">${qi+1}. ${it.q}</div>`;
+    it.opts.forEach((o,oi)=>html+=`<button class="quiz-option" onclick="answerQuiz(this,${oi===it.a})">${o}</button>`);
+  });
+  html+=`<div class="quiz-result" id="quizResult">Tap an answer to check it.</div>`;
+  document.getElementById("quizContent").innerHTML=html;
+}
+
+function answerQuiz(btn,correct) {
+  btn.classList.add(correct?"correct":"wrong");
+  document.getElementById("quizResult").textContent=correct?"✓ Correct":"✗ Not correct — review today's planner material.";
+}
+
+
+
+// ─── ADVANCED SMART TOOLS ─────────────────────────────────────────────────
+function openAdvanced(){ document.getElementById("advancedPanel").classList.add("open"); }
+function closeAdvanced(){ document.getElementById("advancedPanel").classList.remove("open"); }
+
+function saveTodayNote(){
+  const i=Math.max(0,Math.min(TOTAL_DAYS-1,mobileDayIndex));
+  localStorage.setItem("ahc_note_"+i, document.getElementById("todayNote").value);
+}
+function loadTodayNote(){
+  const i=Math.max(0,Math.min(TOTAL_DAYS-1,mobileDayIndex));
+  document.getElementById("todayNote").value=localStorage.getItem("ahc_note_"+i)||"";
+}
+
+function renderToday(){
+  const i=Math.max(0,Math.min(TOTAL_DAYS-1,mobileDayIndex)), d=DAYS[i];
+  document.getElementById("todayDay").textContent="DAY "+(i+1)+" / "+TOTAL_DAYS;
+  document.getElementById("todayDate").textContent=fmtDate(DATES[i]);
+  document.getElementById("todaySubject").textContent=d.label;
+  document.getElementById("todayTopic").textContent=d.topic;
+  const names=["📖 Study done","📝 PYQs done","📰 CA done","🗺️ UP GK done","✅ Revision"];
+  const saved=getSavedRow(i);
+  document.getElementById("todayTasks").innerHTML=names.map((n,t)=>`
+    <label class="task-row">
+      <input type="checkbox" ${saved[t]?"checked":""} onchange="mobileCheck(${i},${t},this.checked)">
+      <span>${n}</span>
+    </label>`).join("");
+  document.getElementById("todayDetails").innerHTML =
+    `<b>AHC PYQs:</b> ${d.ahc.join(" • ")}<br>
+     <b>UPPSC PYQs:</b> ${d.uppsc.join(" • ")}<br>
+     <b>Current Affairs:</b> ${d.ca}<br>
+     <b>UP GK:</b> ${d.upkk.replace("; Book:"," • <b>Book:</b>")}`;
+  loadTodayNote();
+}
+
+function exportBackup(){
+  const data={version:2,start:"2026-08-12",days:TOTAL_DAYS,created:new Date().toISOString(),progress:{},notes:{},profile:{}};
+  for(let i=0;i<TOTAL_DAYS;i++){ data.progress[i]=getSavedRow(i); data.notes[i]=localStorage.getItem("ahc_note_"+i)||""; }
+  ["pName","pRoll","pPost","pHours","pTg"].forEach(id=>data.profile[id]=localStorage.getItem("ahc_"+id)||"");
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="AHC_ROARO_60Day_Backup.json"; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function importBackup(){
+  const input=document.createElement("input"); input.type="file"; input.accept=".json,application/json";
+  input.onchange=async()=>{
+    try{
+      const data=JSON.parse(await input.files[0].text());
+      if(!data || !data.progress) throw new Error("Invalid backup");
+      Object.keys(data.progress).forEach(i=>localStorage.setItem("ahc_row_"+i,JSON.stringify(data.progress[i])));
+      Object.keys(data.notes||{}).forEach(i=>localStorage.setItem("ahc_note_"+i,data.notes[i]||""));
+      Object.keys(data.profile||{}).forEach(k=>localStorage.setItem("ahc_"+k,data.profile[k]||""));
+      loadProfile(); buildTable(); updateDashboard(); renderToday();
+      alert("Backup restored successfully.");
+    }catch(e){ alert("Could not restore this backup."); }
+  };
+  input.click();
+}
+function showSubjectStats(){
+  const labels={ancient:"Ancient",medieval:"Medieval",modern:"Modern",geo:"Geography",science:"Science",eco:"Economy/Environment",polity:"Polity",lang:"English/Hindi",comp:"Computer/Maths",revision:"Revision"};
+  let out="<h3 style='margin:14px 0 8px'>Subject progress</h3>";
+  Object.keys(labels).forEach(s=>{
+    const idx=DAYS.map((d,i)=>d.subj===s?i:-1).filter(i=>i>=0);
+    if(!idx.length)return;
+    let done=0,total=idx.length*5;
+    idx.forEach(i=>done+=getSavedRow(i).filter(Boolean).length);
+    const pct=Math.round(done/total*100);
+    out+=`<div class="subject-stat"><div class="row"><b>${labels[s]}</b><span>${pct}%</span></div><div class="progress-ring"><div style="width:${pct}%"></div></div></div>`;
+  });
+  document.getElementById("advancedContent").innerHTML=out;
+}
+function openInstallGuide(){
+  document.getElementById("advancedContent").innerHTML=`
+    <h3 style="margin:14px 0 8px">📱 Install on Android</h3>
+    <p style="font-size:12px;line-height:1.6;color:var(--text2)">
+    For the most reliable app-like experience, host this file on a secure HTTPS website, open it in Chrome,
+    then use <b>⋮ → Add to Home screen</b>. A true APK build requires packaging the same web app with Android tooling.
+    Your current version already stores progress locally and includes backup/restore.
+    </p>`;
+}
+function searchPlanner(term){
+  const q=(term||"").toLowerCase().trim();
+  document.querySelectorAll("#plannerBody tr").forEach(tr=>{
+    tr.style.display=!q || tr.innerText.toLowerCase().includes(q) ? "" : "none";
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────
+loadProfile();
+const savedTheme = localStorage.getItem("ahc_theme");
+if(savedTheme==="dark"){ dark=true; document.body.classList.add("dark"); }
+buildTable();
+if (window.matchMedia('(max-width: 700px)').matches) showView('dashboard');
+else showView('planner');
+</script>
+
+<nav class="app-nav" id="appNav">
+  <button id="nav-dashboard" onclick="showView('dashboard')"><span class="nav-icon">🏠</span>Home</button>
+  <button id="nav-today" onclick="showView('today')"><span class="nav-icon">📅</span>Today</button>
+  <button id="nav-planner" onclick="showView('planner')"><span class="nav-icon">📋</span>Planner</button>
+  <button id="nav-quiz" onclick="showView('quiz')"><span class="nav-icon">📝</span>Quiz</button>
+</nav>
+
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
+</script>
+
+</body>
+</html>
